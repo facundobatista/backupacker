@@ -1,0 +1,23 @@
+# the root dir to read for everything to do the backup
+rootdir: /home/facundo/temp/backuptest
+
+# the location to build all intermediate structures; if under rootdir, 
+# it must be ignored later
+builddir: /home/facundo/temp/backupbuilder
+
+# the final place where the intermediate built structures will be synced to
+syncdir: /home/facundo/Dropbox/temp/
+
+# the list of specific paths to ignore, always relative to rootdir; the 
+# one to be ignored really is the leaf in each case
+ignore_list:
+    - ESTENOTIENEQUESTAR
+    - chumby/proxy
+    - mostrosity/killing
+
+# the level on which the grouping must happen; by default it's 0, which 
+# means that each directory at root level will be packed. If value in 1,
+# the directory will be kept, and each dir *inside it* will be packed, etc.
+group_levels:
+    chumby: 1
+    foobar: 2
