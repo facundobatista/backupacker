@@ -238,20 +238,16 @@ def main(config_file):
     all_stats = []
     for dirpath, dirnames, filenames in os.walk(str(builddir)):
         dirpath = pathlib.Path(dirpath)
-        print("========== dirpath", dirpath)
         sync_dirpath = syncdir / dirpath.relative_to(builddir)
-        print("========== syncath", sync_dirpath)
 
         for fname in filenames:
             build_fpath = dirpath / fname
             sync_fpath = sync_dirpath / fname
-            print("====== syc", sync_fpath)
             if sync_fpath.exists():
                 status = 'equal' if compare_content(build_fpath, sync_fpath) else 'changed'
             else:
                 status = 'new'
             size = build_fpath.stat().st_size
-            print("=====stat F", build_fpath, size, status)
             all_stats.append((build_fpath.relative_to(builddir), size, status))
 
     tot_sizes = sum(x[1] for x in all_stats) / GB
