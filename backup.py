@@ -192,7 +192,7 @@ def main(config_file):
 
     # group levels
     group_levels = {}
-    for dirpath_str, value in config['group_levels'].items():
+    for dirpath_str, value in config.get('group_levels', {}).items():
         dirpath_relative = pathlib.Path(dirpath_str)
         dirpath = rootdir / dirpath_relative
         if not dirpath.exists():
@@ -254,11 +254,12 @@ def main(config_file):
     tot_files = len(all_stats)
     discrim = Counter(x[2] for x in all_stats)
     logger.info("Stats: built %d files, total size: %.2f GB", tot_files, tot_sizes)
+    limit = 10
     logger.info(
-        "Stats: %d new, %d changed; showing details for those > 1MB...",
-        discrim['new'], discrim['changed'])
+        "Stats: %d new, %d changed; showing details for those > %d MB...",
+        discrim['new'], discrim['changed'], limit)
     for fpath, size, status in all_stats:
-        if size >= MB and status != 'equal':
+        if size >= limit * MB and status != 'equal':
             logger.info("Stats: %8.2f MB  %-7s  %s", size / MB, status, fpath)
 
     # copy
